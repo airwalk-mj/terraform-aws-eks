@@ -43,7 +43,8 @@ data "aws_availability_zones" "available" {
 }
 
 locals {
-  cluster_name = "test-eks-${random_string.suffix.result}"
+  #cluster_name = "test-eks-${random_string.suffix.result}"
+  cluster_name = "markjames-eks-demo"
 }
 
 resource "random_string" "suffix" {
