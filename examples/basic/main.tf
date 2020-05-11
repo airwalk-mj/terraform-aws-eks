@@ -127,7 +127,8 @@ module "eks" {
   source       = "../.."
   cluster_name = local.cluster_name
   subnets      = module.vpc.private_subnets
-
+  cluster_version = "1.16"
+  
   tags = {
     Environment = "test"
     GithubRepo  = "terraform-aws-eks"
