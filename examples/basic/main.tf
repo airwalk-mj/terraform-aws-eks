@@ -2,7 +2,6 @@ terraform {
   required_version = ">= 0.12.0"
 }
 
-# Provider block build using Terragrunt
 #provider "aws" {
 #  version = ">= 2.28.1"
 #  region  = var.region
@@ -20,6 +19,10 @@ provider "null" {
   version = "~> 2.1"
 }
 
+provider "template" {
+  version = "~> 2.1"
+}
+
 data "aws_eks_cluster" "cluster" {
   name = module.eks.cluster_id
 }
@@ -33,18 +36,15 @@ provider "kubernetes" {
   cluster_ca_certificate = base64decode(data.aws_eks_cluster.cluster.certificate_authority.0.data)
   token                  = data.aws_eks_cluster_auth.cluster.token
   load_config_file       = false
-  version                = "~> 1.11"
+  version                = "~> 1.1"
 }
 
 data "aws_availability_zones" "available" {
 }
 
 locals {
-  #vpc_name        = "airwalk-lab-${random_string.suffix.result}"
-  #cluster_name    = "airwalk-lab-${random_string.suffix.result}"
-  vpc_name        = "eks-lab"
-  cluster_name    = "airwalk-lab"
-  cluster_version = "1.16"
+  #cluster_name = "test-eks-${random_string.suffix.result}"
+  cluster_name = "eks-demo"
 }
 
 resource "random_string" "suffix" {
@@ -103,7 +103,7 @@ module "vpc" {
   source  = "terraform-aws-modules/vpc/aws"
   version = "2.6.0"
 
-  name                 = local.vpc_name
+  name                 = "demo-vpc"
   cidr                 = "10.0.0.0/16"
   azs                  = data.aws_availability_zones.available.names
   private_subnets      = ["10.0.1.0/24", "10.0.2.0/24", "10.0.3.0/24"]
@@ -124,11 +124,11 @@ module "vpc" {
 }
 
 module "eks" {
-  source          = "../.."
-  cluster_name    = local.cluster_name
-  subnets         = module.vpc.private_subnets
-  cluster_version = local.cluster_version
-
+  source       = "../.."
+  cluster_name = local.cluster_name
+  subnets      = module.vpc.private_subnets
+  cluster_version = "1.16"
+  
   tags = {
     Environment = "test"
     GithubRepo  = "terraform-aws-eks"
