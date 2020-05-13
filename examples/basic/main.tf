@@ -1,5 +1,9 @@
+
 terraform {
   required_version = ">= 0.12.0"
+
+  # backend intentionally empty. Will be filled by Terragrunt.
+  #backend "s3" {}
 }
 
 provider "aws" {
