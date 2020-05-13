@@ -40,8 +40,10 @@ data "aws_availability_zones" "available" {
 }
 
 locals {
-  vpc_name    = "airwalk-lab-${random_string.suffix.result}"
-  cluster_name    = "airwalk-lab-${random_string.suffix.result}"
+  #vpc_name        = "airwalk-lab-${random_string.suffix.result}"
+  #cluster_name    = "airwalk-lab-${random_string.suffix.result}"
+  vpc_name        = "airwalk-lab"
+  cluster_name    = "airwalk-lab"
   cluster_version = "1.16"
 }
 
