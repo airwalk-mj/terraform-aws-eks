@@ -39,7 +39,8 @@ data "aws_availability_zones" "available" {
 }
 
 locals {
-  cluster_name = "test-eks-${random_string.suffix.result}"
+  cluster_name = "eks-lab-${random_string.suffix.result}"
+  cluster_version = "1.16"
 }
 
 resource "random_string" "suffix" {
@@ -119,9 +120,10 @@ module "vpc" {
 }
 
 module "eks" {
-  source       = "../.."
-  cluster_name = local.cluster_name
-  subnets      = module.vpc.private_subnets
+  source          = "terraform-aws-modules/eks/aws"
+  cluster_name    = local.cluster_name
+  cluster_version = local.cluster_version
+  subnets         = module.vpc.private_subnets
 
   tags = {
     Environment = "test"
