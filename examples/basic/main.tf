@@ -2,6 +2,7 @@ terraform {
   required_version = ">= 0.12.0"
 }
 
+# Provider block build using Terragrunt
 #provider "aws" {
 #  version = ">= 2.28.1"
 #  region  = var.region
