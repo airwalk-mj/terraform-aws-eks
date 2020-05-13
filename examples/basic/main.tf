@@ -129,7 +129,6 @@ module "eks" {
   cluster_name    = local.cluster_name
   cluster_version = local.cluster_version
   subnets         = module.vpc.private_subnets
-  #cluster_version = "1.16"
   
   tags = {
     Environment = "test"
