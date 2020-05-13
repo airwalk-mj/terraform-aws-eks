@@ -2,10 +2,10 @@ terraform {
   required_version = ">= 0.12.0"
 }
 
-#provider "aws" {
-#  version = ">= 2.28.1"
-#  region  = var.region
-#}
+provider "aws" {
+  version = ">= 2.28.1"
+  region  = var.region
+}
 
 provider "random" {
   version = "~> 2.1"
@@ -20,7 +20,8 @@ provider "null" {
 }
 
 data "aws_eks_cluster" "cluster" {
-  name = module.eks.cluster_id
+  #name = module.eks.cluster_id
+  name = king-vish
 }
 
 data "aws_eks_cluster_auth" "cluster" {
