@@ -34,14 +34,14 @@ provider "kubernetes" {
   token                  = data.aws_eks_cluster_auth.cluster.token
   load_config_file       = false
   version                = "~> 1.11"
-  cluster_version        = "1.16"
 }
 
 data "aws_availability_zones" "available" {
 }
 
 locals {
-  cluster_name = "test-eks-${random_string.suffix.result}"
+  cluster_name    = "test-eks-${random_string.suffix.result}"
+  cluster_version = "1.16"
 }
 
 resource "random_string" "suffix" {
@@ -121,9 +121,10 @@ module "vpc" {
 }
 
 module "eks" {
-  source       = "../.."
-  cluster_name = local.cluster_name
-  subnets      = module.vpc.private_subnets
+  source          = "../.."
+  cluster_name    = local.cluster_name
+  subnets         = module.vpc.private_subnets
+  cluster_version = local.cluster_version
 
   tags = {
     Environment = "test"
