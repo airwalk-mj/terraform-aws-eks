@@ -36,11 +36,7 @@ provider "kubernetes" {
   cluster_ca_certificate = base64decode(data.aws_eks_cluster.cluster.certificate_authority.0.data)
   token                  = data.aws_eks_cluster_auth.cluster.token
   load_config_file       = false
-<<<<<<< HEAD
   version                = "~> 1.11"
-=======
-  version                = "~> 1.1"
->>>>>>> 3342704d018e621aa81a523fe55a9563550e1619
 }
 
 data "aws_availability_zones" "available" {
