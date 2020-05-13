@@ -2,10 +2,10 @@ terraform {
   required_version = ">= 0.12.0"
 }
 
-#provider "aws" {
-#  version = ">= 2.28.1"
-#  region  = var.region
-#}
+provider "aws" {
+  version = ">= 2.28.1"
+  region  = var.region
+}
 
 provider "random" {
   version = "~> 2.1"
@@ -16,10 +16,6 @@ provider "local" {
 }
 
 provider "null" {
-  version = "~> 2.1"
-}
-
-provider "template" {
   version = "~> 2.1"
 }
 
@@ -44,8 +40,6 @@ data "aws_availability_zones" "available" {
 
 locals {
   cluster_name = "test-eks-${random_string.suffix.result}"
-  #cluster_name = "eks-demo"
-  cluster_version = "1.16"
 }
 
 resource "random_string" "suffix" {
@@ -104,7 +98,7 @@ module "vpc" {
   source  = "terraform-aws-modules/vpc/aws"
   version = "2.6.0"
 
-  name                 = "eks-lab-vpc"
+  name                 = "eks-lab"
   cidr                 = "10.0.0.0/16"
   azs                  = data.aws_availability_zones.available.names
   private_subnets      = ["10.0.1.0/24", "10.0.2.0/24", "10.0.3.0/24"]
@@ -125,11 +119,10 @@ module "vpc" {
 }
 
 module "eks" {
-  source          = "terraform-aws-modules/eks/aws"
-  cluster_name    = local.cluster_name
-  cluster_version = local.cluster_version
-  subnets         = module.vpc.private_subnets
-  
+  source       = "../.."
+  cluster_name = local.cluster_name
+  subnets      = module.vpc.private_subnets
+
   tags = {
     Environment = "test"
     GithubRepo  = "terraform-aws-eks"
