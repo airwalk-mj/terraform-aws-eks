@@ -34,6 +34,7 @@ provider "kubernetes" {
   token                  = data.aws_eks_cluster_auth.cluster.token
   load_config_file       = false
   version                = "~> 1.11"
+  cluster_version        = "1.16"
 }
 
 data "aws_availability_zones" "available" {
