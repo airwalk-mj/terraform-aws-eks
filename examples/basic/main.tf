@@ -43,13 +43,10 @@ data "aws_availability_zones" "available" {
 }
 
 locals {
-<<<<<<< HEAD
   #cluster_name = "test-eks-${random_string.suffix.result}"
   cluster_name = "airwalk-lab"
-=======
   cluster_name = "eks-lab-${random_string.suffix.result}"
   cluster_version = "1.16"
->>>>>>> e377707968f2577817d0877da1311ced0155e6b1
 }
 
 resource "random_string" "suffix" {
@@ -107,12 +104,7 @@ resource "aws_security_group" "all_worker_mgmt" {
 module "vpc" {
   source  = "terraform-aws-modules/vpc/aws"
   version = "2.6.0"
-
-<<<<<<< HEAD
-  name                 = "lab-vpc"
-=======
   name                 = "eks-lab"
->>>>>>> e377707968f2577817d0877da1311ced0155e6b1
   cidr                 = "10.0.0.0/16"
   azs                  = data.aws_availability_zones.available.names
   private_subnets      = ["10.0.1.0/24", "10.0.2.0/24", "10.0.3.0/24"]
@@ -133,15 +125,9 @@ module "vpc" {
 }
 
 module "eks" {
-<<<<<<< HEAD
   source          = "../.."
   cluster_name    = local.cluster_name
   cluster_version = "1.16"
-=======
-  source          = "terraform-aws-modules/eks/aws"
-  cluster_name    = local.cluster_name
-  cluster_version = local.cluster_version
->>>>>>> e377707968f2577817d0877da1311ced0155e6b1
   subnets         = module.vpc.private_subnets
 
   tags = {
