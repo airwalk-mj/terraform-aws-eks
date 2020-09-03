@@ -128,21 +128,20 @@ module "eks" {
   cluster_name    = local.cluster_name
   cluster_version = "1.16"
   subnets         = module.vpc.private_subnets
-
+  vpc_id          = module.vpc.vpc_id
   tags = {
-    Environment = "test"
+    Environment = "lab"
     GithubRepo  = "terraform-aws-eks"
     GithubOrg   = "terraform-aws-modules"
   }
 
-  vpc_id = module.vpc.vpc_id
-
   worker_groups = [
     {
       name                          = "worker-group-1"
-      instance_type                 = "t2.large"
+      instance_type                 = "m4.large"
       additional_userdata           = "echo hello"
       asg_desired_capacity          = 1
+      asg_max_size                  = 1
       additional_security_group_ids = [aws_security_group.worker_group_mgmt_one.id]
     },
     #{
