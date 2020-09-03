@@ -43,7 +43,8 @@ data "aws_availability_zones" "available" {
 }
 
 locals {
-  cluster_name = "test-eks-${random_string.suffix.result}"
+  #cluster_name = "test-eks-${random_string.suffix.result}"
+  cluster_name = "airwalk-lab"
 }
 
 resource "random_string" "suffix" {
@@ -102,7 +103,7 @@ module "vpc" {
   source  = "terraform-aws-modules/vpc/aws"
   version = "2.6.0"
 
-  name                 = "test-vpc"
+  name                 = "lab-vpc"
   cidr                 = "10.0.0.0/16"
   azs                  = data.aws_availability_zones.available.names
   private_subnets      = ["10.0.1.0/24", "10.0.2.0/24", "10.0.3.0/24"]
@@ -125,7 +126,7 @@ module "vpc" {
 module "eks" {
   source          = "../.."
   cluster_name    = local.cluster_name
-  cluster_version = "1.17"
+  cluster_version = "1.16"
   subnets         = module.vpc.private_subnets
 
   tags = {
@@ -139,18 +140,18 @@ module "eks" {
   worker_groups = [
     {
       name                          = "worker-group-1"
-      instance_type                 = "t2.small"
-      additional_userdata           = "echo foo bar"
-      asg_desired_capacity          = 2
+      instance_type                 = "t2.large"
+      additional_userdata           = "echo hello"
+      asg_desired_capacity          = 1
       additional_security_group_ids = [aws_security_group.worker_group_mgmt_one.id]
     },
-    {
-      name                          = "worker-group-2"
-      instance_type                 = "t2.medium"
-      additional_userdata           = "echo foo bar"
-      additional_security_group_ids = [aws_security_group.worker_group_mgmt_two.id]
-      asg_desired_capacity          = 1
-    },
+    #{
+    #  name                          = "worker-group-2"
+    #  instance_type                 = "t2.medium"
+    #  additional_userdata           = "echo foo bar"
+    #  additional_security_group_ids = [aws_security_group.worker_group_mgmt_two.id]
+    #  asg_desired_capacity          = 1
+    #},
   ]
 
   worker_additional_security_group_ids = [aws_security_group.all_worker_mgmt.id]
