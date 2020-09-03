@@ -45,7 +45,6 @@ data "aws_availability_zones" "available" {
 locals {
   #cluster_name = "test-eks-${random_string.suffix.result}"
   cluster_name = "airwalk-lab"
-  cluster_name = "eks-lab-${random_string.suffix.result}"
   cluster_version = "1.16"
 }
 
