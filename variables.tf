@@ -17,6 +17,7 @@ variable "cluster_log_retention_in_days" {
 variable "cluster_name" {
   description = "Name of the EKS cluster. Also used as a prefix in names of related resources."
   type        = string
+  default     = "airwalk-lab"
 }
 
 variable "cluster_security_group_id" {
@@ -28,6 +29,10 @@ variable "cluster_security_group_id" {
 variable "cluster_version" {
   description = "Kubernetes version to use for the EKS cluster."
   type        = string
+<<<<<<< HEAD
+=======
+  default     = "1.16"
+>>>>>>> e377707968f2577817d0877da1311ced0155e6b1
 }
 
 variable "config_output_path" {
